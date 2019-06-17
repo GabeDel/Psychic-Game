@@ -1,30 +1,46 @@
-var alphabet = ['a','b','c','d','e','f','g','h','i','j','k','l',
-    'm','n','o','p','q','r','s','t','u','v','w','x','y','z'];
+var computerChoices = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z",];
 
-// Variables for tracking wins,losses, and ties
 var wins = 0;
 var losses = 0;
-var guesses = 10;
+var numGuesses = 9;
+var guessChoices = [];
 
-    var computerChoice = alphabet[Math.floor(Math.random() * alphabet.length)];
+document.onkeyup = function(event) {
 
-    console.log(computerChoice)
+	var userGuess = event.key;
+	var computerGuess = computerChoices[Math.floor(Math.random() * computerChoices.length)];
+	var options = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z",];
 
-document.onkeypress = function(event) {
-    var userGuess = event.key;
+	if (options.indexOf(userGuess) > -1) {
 
-    if(userGuess === computerChoice){
-        wins++;
-    }else{
-        guesses--;
-    }
+		if (userGuess === computerGuess) {
+			wins++;
+			numGuesses = 9;
+			guessChoices = [];
+		}
 
-    if(guesses === 0){
-        losses++
-    }
+		if (userGuess != computerGuess) {
+			numGuesses --;
+			guessChoices.push(userGuess);
+		}
 
-    document.getElementsByClassName('wins').innerHTML = "Wins: " + wins;
-    document.getElementsByClassName('losses').innerHTML = "losses: " + losses;
-    document.getElementsByClassName('guesses').innerHTML = "Guesses left: " + guesses;
+		if (numGuesses === 0) {
 
-} 
+		numGuesses = 9;
+		losses ++;
+		guessChoices = [];
+	}
+
+	var html = 
+		"<h1>Psychic Game</h1>" +
+		"<p>Guess what letter I'm thinking of!</p>" +
+		"<p>Victories: " + wins + "</p>" +
+		"<p>Losses: " + losses + "</p>" +
+		"<p>Guesses left until you lose: " + numGuesses + "</p>" +
+		"<p>These letter don't work: " + guessChoices.join(", ") + "</p>";
+
+	document.querySelector("#game").innerHTML = html;
+
+
+	}
+};
